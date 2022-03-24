@@ -60,26 +60,46 @@ const GlobalStyle = createGlobalStyle`
     src: url('./fonts/Roboto-Light.ttf') format('truetype');
   }
 
+  html {
+    font-size:16px;
+  }
+
   body {
     font-family: 'NotoSansKR', 'Roboto', 'sans-serif';
     background-color: #ffffff;
+    -webkit-text-size-adjust:none;
   }
+
   a {
     color: inherit;
     text-decoration: none;
   }
+
   input, button {
     background-color: transparent;
     border: none;
     outline: none;
   }
+
   ol, ul, li {
     list-style: none;
   }
+
   img {
     vertical-align: top;
     width: 100%;
     height: auto;
+  }
+
+  button {
+    border:0 none;
+    background-color:transparent;
+    cursor:pointer
+  }
+
+  button, input[type='button'] {
+    -webkit-appearance:button;
+    border-radius:0;
   }
 `;
 
