@@ -127,6 +127,10 @@ const Styled = {
       transform: rotateY(0deg);
       transform-origin: 0% 0%;
     }
+  `,
+
+  Text: styled.p`
+    font-weight: 700;
   `
 };
 
@@ -138,6 +142,9 @@ function App() {
         <div className="bg-white"></div>
         <div className="bar"></div>
       </Styled.MotionBox>
+
+      <Styled.Text>한글테스트</Styled.Text>
+      <p>sdfl sk fd</p>
     </div>
   );
 }
