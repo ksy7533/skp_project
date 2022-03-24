@@ -1,25 +1,32 @@
 import styled, { keyframes } from "styled-components";
 
-const baseCircleColor = "#fe0955"; // 기본 원의 색
-const circleColors = ["#ffd35c", "#29afff", "#50ebc3", "#fb9f5f"]; // 변경되는 원의 색
+const BASE_CIRCLE_COLOR = "#fe0955"; // 기본 원의 색
+const CIRCLE_COLORS = ["#ffd35c", "#29afff", "#50ebc3", "#fb9f5f"]; // 변경되는 원의 색
 const KEYFRAMES_STEP = 4;
+const BOX_WIDTH = 258;
+const BOX_HEIGHT = 210;
+const CIRCLE_WIDTH = 84;
+const CIRCLE_HEIGHT = 84;
+const DURATION = 450;
 
 const fadeKeyframes = () => {
+  const CIRCLE_COLORS_LENGTH = CIRCLE_COLORS.length;
+  const TRANSLATE_X_DISTANCE = BOX_WIDTH - CIRCLE_WIDTH;
   let result = "";
-  const circleColorsLength = circleColors.length;
+
   for (
     let index = 0;
-    index < circleColorsLength * KEYFRAMES_STEP + 1;
+    index < CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP + 1;
     index++
   ) {
-    const percent = (100 / (circleColorsLength * KEYFRAMES_STEP)) * index;
+    const percent = (100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP)) * index;
     if (index === 0) {
       result = `
         ${result}
         0% { 
           opacity: 1;
-          transform: translateX(0);
-          background-color: ${baseCircleColor};
+          transform: translate(0, -50%);
+          background-color: ${BASE_CIRCLE_COLOR};
         }
         
       `;
@@ -28,19 +35,21 @@ const fadeKeyframes = () => {
         ${result}
         ${percent}% {
           opacity: 0;
-          transform: translateX(86px);
+          transform: translate(${TRANSLATE_X_DISTANCE / 2}px, -50%);
         }
       `;
     } else if (index % KEYFRAMES_STEP === 2) {
       result = `
         ${result}
-        ${percent - 100 / (circleColorsLength * KEYFRAMES_STEP) / 2}% {
-          transform: translateX(172px);
+        ${percent - 100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP) / 2}% {
+          transform: translate(${TRANSLATE_X_DISTANCE}px, -50%);
         }
         ${percent}% {
           opacity: 1;
-          transform: translateX(172px);
-          background-color: ${circleColors[Math.floor(index / KEYFRAMES_STEP)]};
+          transform: translate(${TRANSLATE_X_DISTANCE}px, -50%);
+          background-color: ${
+            CIRCLE_COLORS[Math.floor(index / KEYFRAMES_STEP)]
+          };
         }
       `;
     } else if (index % KEYFRAMES_STEP === 3) {
@@ -48,18 +57,18 @@ const fadeKeyframes = () => {
         ${result}
         ${percent}% {
           opacity: 0;
-          transform: translateX(86px);
+          transform: translate(${TRANSLATE_X_DISTANCE / 2}px, -50%);
         }
       `;
     } else if (index % KEYFRAMES_STEP === 0) {
       result = `
         ${result}
-        ${percent - 100 / (circleColorsLength * KEYFRAMES_STEP) / 2}% {
-          transform: translateX(0);
+        ${percent - 100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP) / 2}% {
+          transform: translate(0, -50%);
         }
         ${percent}% {
           opacity: 1;
-          transform: translateX(0);
+          transform: translate(0, -50%);
           background-color: #fe0955;
         }
       `;
@@ -81,38 +90,40 @@ const rotate = keyframes`
 const Styled = {
   MotionBox: styled.div`
     position: relative;
-    width: 258px;
-    height: 210px;
+    width: ${BOX_WIDTH}px;
+    height: ${BOX_HEIGHT}px;
 
     .bar {
       position: absolute;
-      left: 128px;
-      top: 30px;
+      top: 50%;
+      left: 50%;
+      margin: 0 auto;
       width: 2px;
       height: 132px;
       background-color: #e7e7e7;
+      transform: translate(-50%, -50%);
     }
 
     .circle {
       position: absolute;
-      top: 30px;
+      top: 50%;
       left: 0;
-      width: 86px;
-      height: 86px;
+      width: ${CIRCLE_WIDTH}px;
+      height: ${CIRCLE_HEIGHT}px;
       border-radius: 50%;
       animation: ${fadeKeyframes()}
-        ${450 * KEYFRAMES_STEP * circleColors.length}ms 0ms infinite ease-in-out
-        normal;
+        ${DURATION * KEYFRAMES_STEP * CIRCLE_COLORS.length}ms 0ms infinite
+        ease-in-out normal;
     }
 
     .bg-white {
       position: absolute;
       top: 0;
-      left: 129px;
-      width: 129px;
-      height: 210px;
+      right: 0;
+      width: ${BOX_WIDTH / 2}px;
+      height: ${BOX_HEIGHT}px;
       background-color: white;
-      animation: ${rotate} 900ms 0ms infinite ease-in-out alternate;
+      animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out alternate;
       transform: rotateY(0deg);
       transform-origin: 0% 0%;
     }
