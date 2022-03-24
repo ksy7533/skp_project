@@ -1,150 +1,126 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-const BASE_CIRCLE_COLOR = "#fe0955"; // 기본 원의 색
-const CIRCLE_COLORS = ["#ffd35c", "#29afff", "#50ebc3", "#fb9f5f"]; // 변경되는 원의 색
-const KEYFRAMES_STEP = 4;
-const BOX_WIDTH = 258;
-const BOX_HEIGHT = 210;
-const CIRCLE_WIDTH = 84;
-const CIRCLE_HEIGHT = 84;
-const DURATION = 450;
+import Colors from "./styles/colors";
 
-const fadeKeyframes = () => {
-  const CIRCLE_COLORS_LENGTH = CIRCLE_COLORS.length;
-  const TRANSLATE_X_DISTANCE = BOX_WIDTH - CIRCLE_WIDTH;
-  let result = "";
-
-  for (
-    let index = 0;
-    index < CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP + 1;
-    index++
-  ) {
-    const percent = (100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP)) * index;
-    if (index === 0) {
-      result = `
-        ${result}
-        0% { 
-          opacity: 1;
-          transform: translate(0, -50%);
-          background-color: ${BASE_CIRCLE_COLOR};
-        }
-        
-      `;
-    } else if (index % KEYFRAMES_STEP === 1) {
-      result = `
-        ${result}
-        ${percent}% {
-          opacity: 0;
-          transform: translate(${TRANSLATE_X_DISTANCE / 2}px, -50%);
-        }
-      `;
-    } else if (index % KEYFRAMES_STEP === 2) {
-      result = `
-        ${result}
-        ${percent - 100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP) / 2}% {
-          transform: translate(${TRANSLATE_X_DISTANCE}px, -50%);
-        }
-        ${percent}% {
-          opacity: 1;
-          transform: translate(${TRANSLATE_X_DISTANCE}px, -50%);
-          background-color: ${
-            CIRCLE_COLORS[Math.floor(index / KEYFRAMES_STEP)]
-          };
-        }
-      `;
-    } else if (index % KEYFRAMES_STEP === 3) {
-      result = `
-        ${result}
-        ${percent}% {
-          opacity: 0;
-          transform: translate(${TRANSLATE_X_DISTANCE / 2}px, -50%);
-        }
-      `;
-    } else if (index % KEYFRAMES_STEP === 0) {
-      result = `
-        ${result}
-        ${percent - 100 / (CIRCLE_COLORS_LENGTH * KEYFRAMES_STEP) / 2}% {
-          transform: translate(0, -50%);
-        }
-        ${percent}% {
-          opacity: 1;
-          transform: translate(0, -50%);
-          background-color: #fe0955;
-        }
-      `;
-    }
-  }
-
-  return keyframes`${result}`;
-};
-
-const rotate = keyframes`
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(180deg);
-  }
-`;
+import MotionComponent from "./components/MotionComponent";
+import RwdComponent from "./components/RwdComponent";
+import SwiperComponent from "./components/SwiperComponent";
 
 const Styled = {
-  MotionBox: styled.div`
-    position: relative;
-    width: ${BOX_WIDTH}px;
-    height: ${BOX_HEIGHT}px;
+  Wrap: styled.div`
+    width: 100%;
+    height: 100%;
+  `,
 
-    .bar {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin: 0 auto;
-      width: 2px;
-      height: 132px;
-      background-color: #e7e7e7;
-      transform: translate(-50%, -50%);
+  Header: styled.header`
+    text-align: center;
+
+    h1 {
+      padding: 6rem 2rem 2rem;
+      color: ${Colors.BLACK};
+      font-size: 3rem;
+      font-weight: bold;
     }
 
-    .circle {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: ${CIRCLE_WIDTH}px;
-      height: ${CIRCLE_HEIGHT}px;
-      border-radius: 50%;
-      animation: ${fadeKeyframes()}
-        ${DURATION * KEYFRAMES_STEP * CIRCLE_COLORS.length}ms 0ms infinite
-        ease-in-out normal;
-    }
-
-    .bg-white {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: ${BOX_WIDTH / 2}px;
-      height: ${BOX_HEIGHT}px;
-      background-color: white;
-      animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out alternate;
-      transform: rotateY(0deg);
-      transform-origin: 0% 0%;
+    p {
+      padding-bottom: 1rem;
+      font-size: 1.4rem;
     }
   `,
 
-  Text: styled.p`
-    font-weight: 700;
+  Nav: styled.nav`
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2rem;
+    border: 1px solid ${Colors.GRAY};
+
+    a {
+      box-sizing: border-box;
+      text-align: center;
+      display: block;
+      padding: 1.4rem 2rem;
+      width: 50%;
+      font-size: 1.2rem;
+
+      &:nth-child(-n + 2) {
+        border-bottom: 1px solid ${Colors.GRAY};
+      }
+
+      &:nth-child(odd) {
+        border-right: 1px solid ${Colors.GRAY};
+      }
+    }
+  `,
+
+  Container: styled.main``,
+
+  Section: styled.section``,
+
+  Title: styled.h2`
+    padding: 2rem;
+
+    strong {
+      display: inline-block;
+      padding-top: 0.5rem;
+      color: ${Colors.BLACK};
+      font-weight: bold;
+      font-size: 2.4rem;
+      border-top: 2px solid ${Colors.BLACK};
+    }
+  `,
+
+  Footer: styled.footer`
+    padding: 4rem 1rem;
+
+    p {
+      text-align: right;
+      color: ${Colors.BLACK};
+      font-size: 2rem;
+      font-weight: bold;
+    }
   `
 };
 
 function App() {
   return (
     <div className="App">
-      <Styled.MotionBox>
-        <div className="circle"></div>
-        <div className="bg-white"></div>
-        <div className="bar"></div>
-      </Styled.MotionBox>
+      <Styled.Wrap>
+        <Styled.Header>
+          <h1>SKP Homework</h1>
+          <p>각 섹션을 참고하여 그대로 레이아웃을 구현해 주세요.</p>
+        </Styled.Header>
 
-      <Styled.Text>한글테스트</Styled.Text>
-      <p>sdfl sk fd</p>
+        <Styled.Nav>
+          <a href="#">Motion</a>
+          <a href="#">Responsive Web Design</a>
+          <a href="#">Swiper</a>
+        </Styled.Nav>
+
+        <Styled.Container>
+          <Styled.Section>
+            <Styled.Title>
+              <strong>Motion</strong>
+            </Styled.Title>
+            <MotionComponent></MotionComponent>
+          </Styled.Section>
+          <Styled.Section>
+            <Styled.Title>
+              <strong>Responsive Web Design</strong>
+            </Styled.Title>
+            <RwdComponent></RwdComponent>
+          </Styled.Section>
+          <Styled.Section>
+            <Styled.Title>
+              <strong>Swiper</strong>
+            </Styled.Title>
+            <SwiperComponent></SwiperComponent>
+          </Styled.Section>
+        </Styled.Container>
+
+        <Styled.Footer>
+          <p>SK Planet, ALL RIGHT RESERVED</p>
+        </Styled.Footer>
+      </Styled.Wrap>
     </div>
   );
 }

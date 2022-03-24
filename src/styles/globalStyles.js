@@ -61,10 +61,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size:16px;
+    font-size: 10px;
   }
 
   body {
+    line-height: 1.4;
+    color: #666;
     font-family: 'NotoSansKR', 'Roboto', 'sans-serif';
     background-color: #ffffff;
     -webkit-text-size-adjust:none;
