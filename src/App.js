@@ -1,19 +1,20 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { throttle } from "lodash";
 
 import Colors from "./styles/colors";
+import RWD from "./styles/rwd";
 
 import MotionComponent from "./components/MotionComponent";
 import RwdComponent from "./components/RwdComponent";
 import SwiperComponent from "./components/SwiperComponent";
 
-const MENU_HEIGHT = 132;
-
 const Styled = {
   Wrap: styled.div`
-    width: 100%;
-    height: 100%;
+    @media screen and (min-width: ${RWD.TABLET}px) {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
   `,
 
   Header: styled.header`
@@ -38,6 +39,16 @@ const Styled = {
     top: 0;
     padding: 2rem;
     background-color: ${Colors.WHITE};
+    transition: 0.4s box-shadow;
+
+    ${({ isFixed }) => {
+      return (
+        isFixed &&
+        css`
+          box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1);
+        `
+      );
+    }}
 
     nav {
       display: flex;
@@ -65,16 +76,52 @@ const Styled = {
           background-color: ${Colors.BLUE};
           transition: 0.4s background-color;
         }
+
+        @media screen and (min-width: ${RWD.TABLET}px) {
+          width: 33.33%;
+          border-right: 0;
+          border-bottom: 0;
+          border-top: 0;
+
+          &:nth-child(-n + 2) {
+            border-bottom: 0;
+          }
+
+          &:nth-child(odd) {
+            border-right: 0;
+          }
+
+          &:not(:first-of-type) {
+            border-left: 1px solid ${Colors.GRAY};
+          }
+        }
       }
     }
   `,
 
   Container: styled.main``,
 
-  Section: styled.section``,
+  Section: styled.section`
+    ${({ menuHeight }) => {
+      return (
+        menuHeight &&
+        css`
+          scroll-margin-top: ${menuHeight}px;
+        `
+      );
+    }}
+
+    ${({ bgColor }) => {
+      return (
+        bgColor &&
+        css`
+          background-color: ${bgColor};
+        `
+      );
+    }}
+  `,
 
   Title: styled.h2`
-    scroll-margin-top: ${MENU_HEIGHT}px;
     padding: 2rem;
 
     strong {
@@ -89,6 +136,7 @@ const Styled = {
 
   Footer: styled.footer`
     padding: 4rem 1rem;
+    background-color: ${Colors.GRAY};
 
     p {
       text-align: right;
@@ -100,26 +148,42 @@ const Styled = {
 };
 
 function App() {
-  const titleRefs = useRef([]);
+  const sectionRefs = useRef([]);
+  const menuRef = useRef();
   const [menuIndex, setMenuIndex] = useState(0);
+  const [menuHeight, setMenuHeight] = useState(0);
+  const [isFixed, setIsFixed] = useState(false);
+  const [menuOffset, setMenuOffset] = useState(0);
 
-  const handleMenuClick = useCallback(index => {
-    return e => {
-      e.preventDefault();
-      titleRefs.current[index].scrollIntoView({
-        behavior: "smooth"
-      });
-    };
+  const handleMenuClick = useCallback(
+    index => {
+      return e => {
+        e.preventDefault();
+        if (menuIndex === index) return;
+        sectionRefs.current[index].scrollIntoView({
+          behavior: "smooth"
+        });
+      };
+    },
+    [menuIndex]
+  );
+
+  useEffect(() => {
+    setMenuHeight(menuRef.current.offsetHeight);
+    setMenuOffset(menuRef.current.offsetTop);
   }, []);
 
   useEffect(() => {
     const handleScroll = throttle(() => {
       const scrollY = window.scrollY;
-      if (titleRefs.current[1].offsetTop - MENU_HEIGHT - 1 > scrollY) {
+
+      menuOffset - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
+
+      if (sectionRefs.current[1].offsetTop - menuHeight - 1 > scrollY) {
         setMenuIndex(0);
       } else if (
-        titleRefs.current[1].offsetTop - MENU_HEIGHT - 1 <= scrollY &&
-        titleRefs.current[2].offsetTop - MENU_HEIGHT - 1 > scrollY
+        sectionRefs.current[1].offsetTop - menuHeight - 1 <= scrollY &&
+        sectionRefs.current[2].offsetTop - menuHeight - 1 > scrollY
       ) {
         setMenuIndex(1);
       } else {
@@ -127,12 +191,12 @@ function App() {
       }
     }, 100);
 
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener("scroll", handleScroll, false);
 
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [menuHeight]);
 
   return (
     <div className="App">
@@ -142,7 +206,7 @@ function App() {
           <p>각 섹션을 참고하여 그대로 레이아웃을 구현해 주세요.</p>
         </Styled.Header>
 
-        <Styled.Menu>
+        <Styled.Menu ref={menuRef} isFixed={isFixed}>
           <nav>
             <a
               href="#"
@@ -169,20 +233,30 @@ function App() {
         </Styled.Menu>
 
         <Styled.Container>
-          <Styled.Section>
-            <Styled.Title ref={el => (titleRefs.current[0] = el)}>
+          <Styled.Section
+            ref={el => (sectionRefs.current[0] = el)}
+            menuHeight={menuHeight}
+          >
+            <Styled.Title>
               <strong>Motion</strong>
             </Styled.Title>
             <MotionComponent></MotionComponent>
           </Styled.Section>
-          <Styled.Section>
-            <Styled.Title ref={el => (titleRefs.current[1] = el)}>
+          <Styled.Section
+            ref={el => (sectionRefs.current[1] = el)}
+            bgColor={Colors.GRAY}
+            menuHeight={menuHeight}
+          >
+            <Styled.Title>
               <strong>Responsive Web Design</strong>
             </Styled.Title>
             <RwdComponent></RwdComponent>
           </Styled.Section>
-          <Styled.Section>
-            <Styled.Title ref={el => (titleRefs.current[2] = el)}>
+          <Styled.Section
+            ref={el => (sectionRefs.current[2] = el)}
+            menuHeight={menuHeight}
+          >
+            <Styled.Title>
               <strong>Swiper</strong>
             </Styled.Title>
             <SwiperComponent></SwiperComponent>

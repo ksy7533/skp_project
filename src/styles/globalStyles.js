@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import RWD from "./rwd";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -50,6 +51,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 10px;
     -webkit-touch-callout : none;
     -webkit-tap-highlight-color: transparent;
+
+    @media screen and (min-width: ${RWD.TABLET}px) {
+      font-size: 12px;
+    }
   }
 
   body {
