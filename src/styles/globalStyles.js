@@ -3,13 +3,6 @@ import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
-
-  @font-face {
-    font-family: 'NotoSansKR';
-    font-style: normal;
-    font-weight: 300;
-    src: url('./fonts/NotoSansKR-Light.otf') format('truetype');
-  }
   
   @font-face {
     font-family: 'NotoSansKR';
@@ -30,13 +23,6 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-weight: 700;
     src: url('./fonts/NotoSansKR-Bold.otf') format('truetype');
-  }
-
-  @font-face {
-    font-family: 'Roboto';
-    font-weight: 300;
-    unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
-    src: url('./fonts/Roboto-Light.ttf') format('truetype');
   }
 
   @font-face {
@@ -62,6 +48,8 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     font-size: 10px;
+    -webkit-touch-callout : none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
