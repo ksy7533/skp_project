@@ -3,6 +3,13 @@ import reset from "styled-reset";
 import RWD from "./rwd";
 import Colors from "./colors";
 
+import NotoSansKRBold from "./fonts/NotoSansKR-Bold.otf";
+import NotoSansKRMedium from "./fonts/NotoSansKR-Medium.otf";
+import NotoSansKRRegular from "./fonts/NotoSansKR-Regular.otf";
+import RobotoBold from "./fonts/Roboto-Bold.ttf";
+import RobotoMedium from "./fonts/Roboto-Medium.ttf";
+import RobotoRegular from "./fonts/Roboto-Regular.ttf";
+
 const GlobalStyle = createGlobalStyle`
   ${reset}
   
@@ -10,42 +17,42 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'NotoSansKR';
     font-style: normal;
     font-weight: 400;
-    src: url('./fonts/NotoSansKR-Regular.otf') format('truetype');
+    src: url(${NotoSansKRRegular}) format('truetype');
   }
   
   @font-face {
     font-family: 'NotoSansKR';
     font-style: normal;
     font-weight: 500;
-    src: url('./fonts/NotoSansKR-Medium.otf') format('truetype');
+    src: url(${NotoSansKRMedium}) format('truetype');
   }
   
   @font-face {
     font-family: 'NotoSansKR';
     font-style: normal;
     font-weight: 700;
-    src: url('./fonts/NotoSansKR-Bold.otf') format('truetype');
+    src: url(${NotoSansKRBold}) format('truetype');
   }
 
   @font-face {
     font-family: 'Roboto';
     font-weight: 400;
     unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
-    src: url('./fonts/Roboto-Light.ttf') format('truetype');
+    src: url(${RobotoRegular}) format('truetype');
   }
 
   @font-face {
     font-family: 'Roboto';
     font-weight: 500;
     unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
-    src: url('./fonts/Roboto-Light.ttf') format('truetype');
+    src: url(${RobotoMedium}) format('truetype');
   }
 
   @font-face {
     font-family: 'Roboto';
     font-weight: 700;
     unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
-    src: url('./fonts/Roboto-Light.ttf') format('truetype');
+    src: url(${RobotoBold}) format('truetype');
   }
 
   html {
