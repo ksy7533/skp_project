@@ -96,7 +96,51 @@ const Styled = {
     width: ${BOX_WIDTH}px;
     height: ${BOX_HEIGHT}px;
 
+    .bg-white-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+
+      .bg-white {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: ${BOX_WIDTH / 2}px;
+        height: ${BOX_HEIGHT}px;
+        background-color: ${Colors.WHITE};
+        animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out
+          alternate;
+        transform: rotateY(0deg);
+        transform-origin: 0% 0%;
+      }
+    }
+
+    .circle-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+
+      .circle {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: ${CIRCLE_WIDTH}px;
+        height: ${CIRCLE_HEIGHT}px;
+        border-radius: 50%;
+        animation: ${fadeKeyframes()}
+          ${DURATION * KEYFRAMES_STEP * CIRCLE_COLORS.length}ms 0ms infinite
+          ease-in-out normal;
+      }
+    }
+
     .bar {
+      z-index: 100;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -105,30 +149,6 @@ const Styled = {
       height: 132px;
       background-color: #e7e7e7;
       transform: translate(-50%, -50%);
-    }
-
-    .circle {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: ${CIRCLE_WIDTH}px;
-      height: ${CIRCLE_HEIGHT}px;
-      border-radius: 50%;
-      animation: ${fadeKeyframes()}
-        ${DURATION * KEYFRAMES_STEP * CIRCLE_COLORS.length}ms 0ms infinite
-        ease-in-out normal;
-    }
-
-    .bg-white {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: ${BOX_WIDTH / 2}px;
-      height: ${BOX_HEIGHT}px;
-      background-color: green;
-      animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out alternate;
-      transform: rotateY(0deg);
-      transform-origin: 0% 0%;
     }
   `,
 
@@ -173,8 +193,14 @@ function MotionComponent() {
   return (
     <>
       <Styled.MotionBox>
-        <div className="circle"></div>
-        <div className="bg-white"></div>
+        <div className="circle-wrap">
+          <div className="circle"></div>
+        </div>
+
+        <div className="bg-white-wrap">
+          <div className="bg-white"></div>
+        </div>
+
         <div className="bar"></div>
       </Styled.MotionBox>
 

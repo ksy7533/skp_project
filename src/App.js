@@ -62,7 +62,7 @@ const Styled = {
         display: block;
         padding: 1.4rem 2rem;
         width: 50%;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
 
         &:nth-child(-n + 2) {
           border-bottom: 1px solid ${Colors.GRAY};
