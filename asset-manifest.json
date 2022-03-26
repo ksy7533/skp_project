@@ -1,7 +1,13 @@
 {
   "files": {
     "main.css": "/skp_project/static/css/main.824c2a78.css",
-    "main.js": "/skp_project/static/js/main.1d2e2716.js",
+    "main.js": "/skp_project/static/js/main.e468d364.js",
+    "static/media/NotoSansKR-Bold.otf": "/skp_project/static/media/NotoSansKR-Bold.c252383c4f70753be0e7.otf",
+    "static/media/NotoSansKR-Medium.otf": "/skp_project/static/media/NotoSansKR-Medium.56207b5e52841342a21b.otf",
+    "static/media/NotoSansKR-Regular.otf": "/skp_project/static/media/NotoSansKR-Regular.e1aa54c04a18648e6468.otf",
+    "static/media/Roboto-Medium.ttf": "/skp_project/static/media/Roboto-Medium.7429a63c09f79a1760b0.ttf",
+    "static/media/Roboto-Regular.ttf": "/skp_project/static/media/Roboto-Regular.a8d6ac03c7b96b7acb62.ttf",
+    "static/media/Roboto-Bold.ttf": "/skp_project/static/media/Roboto-Bold.75371f53f06181df75f1.ttf",
     "static/media/img_05.jpg": "/skp_project/static/media/img_05.feceb40dca4273766cee.jpg",
     "static/media/img_04.jpg": "/skp_project/static/media/img_04.484e816fad5b2653cb17.jpg",
     "static/media/img_03.jpg": "/skp_project/static/media/img_03.b9e18b4d16a661a98c9b.jpg",
@@ -10,10 +16,10 @@
     "static/media/img_01.jpg": "/skp_project/static/media/img_01.1d237559462509658844.jpg",
     "index.html": "/skp_project/index.html",
     "main.824c2a78.css.map": "/skp_project/static/css/main.824c2a78.css.map",
-    "main.1d2e2716.js.map": "/skp_project/static/js/main.1d2e2716.js.map"
+    "main.e468d364.js.map": "/skp_project/static/js/main.e468d364.js.map"
   },
   "entrypoints": [
     "static/css/main.824c2a78.css",
-    "static/js/main.1d2e2716.js"
+    "static/js/main.e468d364.js"
   ]
 }
