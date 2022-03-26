@@ -102,15 +102,6 @@ const Styled = {
   Container: styled.main``,
 
   Section: styled.section`
-    ${({ menuHeight }) => {
-      return (
-        menuHeight &&
-        css`
-          scroll-margin-top: ${menuHeight}px;
-        `
-      );
-    }}
-
     ${({ bgColor }) => {
       return (
         bgColor &&
@@ -122,7 +113,7 @@ const Styled = {
   `,
 
   Title: styled.h2`
-    padding: 2rem;
+    padding: 6rem 2rem 2rem;
 
     strong {
       display: inline-block;
@@ -135,7 +126,7 @@ const Styled = {
   `,
 
   Footer: styled.footer`
-    padding: 6rem 1rem;
+    padding: 8rem 1rem;
     background-color: ${Colors.GRAY};
 
     p {
@@ -160,8 +151,11 @@ function App() {
       return e => {
         e.preventDefault();
         if (menuIndex === index) return;
-        sectionRefs.current[index].scrollIntoView({
-          behavior: "smooth"
+
+        window.scroll({
+          behavior: "smooth",
+          left: 0,
+          top: sectionRefs.current[index].offsetTop - menuHeight
         });
       };
     },
@@ -233,10 +227,7 @@ function App() {
         </Styled.Menu>
 
         <Styled.Container>
-          <Styled.Section
-            ref={el => (sectionRefs.current[0] = el)}
-            menuHeight={menuHeight}
-          >
+          <Styled.Section ref={el => (sectionRefs.current[0] = el)}>
             <Styled.Title>
               <strong>Motion</strong>
             </Styled.Title>
@@ -245,17 +236,13 @@ function App() {
           <Styled.Section
             ref={el => (sectionRefs.current[1] = el)}
             bgColor={Colors.GRAY}
-            menuHeight={menuHeight}
           >
             <Styled.Title>
               <strong>Responsive Web Design</strong>
             </Styled.Title>
             <RwdComponent></RwdComponent>
           </Styled.Section>
-          <Styled.Section
-            ref={el => (sectionRefs.current[2] = el)}
-            menuHeight={menuHeight}
-          >
+          <Styled.Section ref={el => (sectionRefs.current[2] = el)}>
             <Styled.Title>
               <strong>Swiper</strong>
             </Styled.Title>
