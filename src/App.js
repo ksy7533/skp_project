@@ -135,7 +135,7 @@ const Styled = {
   `,
 
   Footer: styled.footer`
-    padding: 4rem 1rem;
+    padding: 6rem 1rem;
     background-color: ${Colors.GRAY};
 
     p {
