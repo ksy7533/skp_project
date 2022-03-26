@@ -125,11 +125,10 @@ const Styled = {
       right: 0;
       width: ${BOX_WIDTH / 2}px;
       height: ${BOX_HEIGHT}px;
-      background-color: white;
+      background-color: green;
       animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out alternate;
       transform: rotateY(0deg);
       transform-origin: 0% 0%;
-      backface-visibility: hidden;
     }
   `,
 
