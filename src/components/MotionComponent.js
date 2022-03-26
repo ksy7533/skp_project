@@ -129,6 +129,7 @@ const Styled = {
       animation: ${rotate} ${DURATION * 2}ms 0ms infinite ease-in-out alternate;
       transform: rotateY(0deg);
       transform-origin: 0% 0%;
+      backface-visibility: hidden;
     }
   `,
 
