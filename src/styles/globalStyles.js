@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import RWD from "./rwd";
+import Colors from "./colors";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -59,9 +60,9 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     line-height: 1.4;
-    color: #666;
+    color: ${Colors.BLACK};
     font-family: 'NotoSansKR', 'Apple SD Gothic Neo', 'Roboto', 'sans-serif';
-    background-color: #ffffff;
+    background-color: ${Colors.WHITE};
     -webkit-text-size-adjust:none;
   }
 
@@ -89,7 +90,8 @@ const GlobalStyle = createGlobalStyle`
   button {
     border:0 none;
     background-color:transparent;
-    cursor:pointer
+    cursor:pointer;
+    color:${Colors.BLACK};
   }
 
   button, input[type='button'] {

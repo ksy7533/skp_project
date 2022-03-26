@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { throttle } from "lodash";
+import smoothscroll from "smoothscroll-polyfill";
 
 import Colors from "./styles/colors";
 import RWD from "./styles/rwd";
@@ -163,6 +164,7 @@ function App() {
   );
 
   useEffect(() => {
+    smoothscroll.polyfill();
     setMenuHeight(menuRef.current.offsetHeight);
     setMenuOffset(menuRef.current.offsetTop);
   }, []);
