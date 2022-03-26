@@ -60,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     line-height: 1.4;
     color: #666;
-    font-family: 'NotoSansKR', 'Roboto', 'sans-serif';
+    font-family: 'NotoSansKR', 'Apple SD Gothic Neo', 'Roboto', 'sans-serif';
     background-color: #ffffff;
     -webkit-text-size-adjust:none;
   }
