@@ -1,4 +1,10 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback
+} from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import styled, { css } from "styled-components";
@@ -50,7 +56,6 @@ const Styled = {
   TagSwiperWrap: styled.div`
     .tag-swiper {
       margin-bottom: 2rem;
-      padding: 0 1rem;
 
       .swiper-slide {
         width: auto;
@@ -164,6 +169,7 @@ function SwiperComponent() {
   const photoSwiperRef = useRef(null);
   const prevButtonRef = useRef(null);
   const nextButtonRef = useRef(null);
+  const tagSwiperRef = useRef(null);
 
   const handleClickTag = useCallback(
     id => {
@@ -218,10 +224,36 @@ function SwiperComponent() {
     setCurrentIndex(realIndex);
   }, []);
 
+  useEffect(() => {
+    const swiper = tagSwiperRef.current;
+    const slides = swiper.slides;
+    const slideTotalWidth = slides.reduce(
+      (acc, currentValue) => acc + currentValue.offsetWidth,
+      0
+    );
+    const selectedTargetLeft =
+      slides[currentIndex].offsetLeft + slides[currentIndex].offsetWidth / 2;
+    const swiperWidthHalf = swiper.width / 2;
+    let positionLeft = 0;
+
+    if (swiperWidthHalf > selectedTargetLeft) {
+      positionLeft = 0;
+    } else if (swiperWidthHalf > slideTotalWidth - selectedTargetLeft) {
+      positionLeft = slideTotalWidth - swiper.width;
+    } else {
+      positionLeft = selectedTargetLeft - swiperWidthHalf;
+    }
+    swiper.translateTo(-positionLeft, 500);
+  }, [currentIndex]);
+
   return (
     <>
       <Styled.TagSwiperWrap>
-        <Swiper slidesPerView="auto" className="tag-swiper">
+        <Swiper
+          onSwiper={swiper => (tagSwiperRef.current = swiper)}
+          slidesPerView="auto"
+          className="tag-swiper"
+        >
           {renderTagSwiperSlide()}
         </Swiper>
       </Styled.TagSwiperWrap>
