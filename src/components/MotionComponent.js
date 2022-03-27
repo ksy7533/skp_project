@@ -170,7 +170,7 @@ const Styled = {
       &:before {
         content: "";
         position: absolute;
-        top: 6px;
+        top: 9px;
         left: 0;
         display: block;
         width: 2px;

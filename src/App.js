@@ -135,6 +135,11 @@ const Styled = {
       color: ${Colors.BLACK};
       font-size: 2rem;
       font-weight: bold;
+
+      @media screen and (min-width: ${RWD.TABLET}px) {
+        max-width: 1024px;
+        margin: 0 auto;
+      }
     }
   `
 };
@@ -171,15 +176,16 @@ function App() {
 
   useEffect(() => {
     const handleScroll = throttle(() => {
+      const SCROLL_INTERVAL = 100;
       const scrollY = window.scrollY;
 
       menuOffset - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
 
-      if (sectionRefs.current[1].offsetTop - menuHeight - 1 > scrollY) {
+      if (sectionRefs.current[1].offsetTop - SCROLL_INTERVAL - 100 > scrollY) {
         setMenuIndex(0);
       } else if (
-        sectionRefs.current[1].offsetTop - menuHeight - 1 <= scrollY &&
-        sectionRefs.current[2].offsetTop - menuHeight - 1 > scrollY
+        sectionRefs.current[1].offsetTop - SCROLL_INTERVAL - 100 <= scrollY &&
+        sectionRefs.current[2].offsetTop - SCROLL_INTERVAL - 100 > scrollY
       ) {
         setMenuIndex(1);
       } else {
@@ -251,11 +257,11 @@ function App() {
             <SwiperComponent></SwiperComponent>
           </Styled.Section>
         </Styled.Container>
-
-        <Styled.Footer>
-          <p>SK Planet, ALL RIGHT RESERVED</p>
-        </Styled.Footer>
       </Styled.Wrap>
+
+      <Styled.Footer>
+        <p>SK Planet, ALL RIGHT RESERVED</p>
+      </Styled.Footer>
     </div>
   );
 }

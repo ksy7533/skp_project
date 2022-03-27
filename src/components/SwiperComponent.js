@@ -13,7 +13,7 @@ import img04 from "../images/img_04.jpg";
 import img05 from "../images/img_05.jpg";
 import img06 from "../images/img_06.jpg";
 
-const photoList = [
+const PHOTO_LIST_DATA = [
   {
     id: 1,
     src: img01,
@@ -99,6 +99,21 @@ const Styled = {
   PhotoSwiperWrap: styled.div`
     position: relative;
 
+    .swiper.photo-swiper {
+      height: 50rem;
+
+      .swiper-slide {
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      @media screen and (min-width: ${RWD.TABLET}px) {
+        height: auto;
+      }
+    }
+
     button {
       z-index: 10;
       position: absolute;
@@ -152,7 +167,7 @@ function SwiperComponent() {
 
   const handleClickTag = useCallback(
     id => {
-      const index = photoList.findIndex(item => {
+      const index = PHOTO_LIST_DATA.findIndex(item => {
         return item.id === id;
       });
       if (photoSwiperRef.current) {
@@ -172,7 +187,7 @@ function SwiperComponent() {
 
   const renderTagSwiperSlide = useMemo(() => {
     return () => {
-      return photoList.map((item, index) => {
+      return PHOTO_LIST_DATA.map((item, index) => {
         return (
           <SwiperSlide key={item.id}>
             <Styled.Tag
@@ -189,7 +204,7 @@ function SwiperComponent() {
 
   const renderPhotoSwiperSlide = useMemo(() => {
     return () => {
-      return photoList.map(item => {
+      return PHOTO_LIST_DATA.map(item => {
         return (
           <SwiperSlide key={item.id}>
             <img src={item.src} alt={item.name} />

@@ -55,6 +55,11 @@ const GlobalStyle = createGlobalStyle`
     src: url(${RobotoBold}) format('truetype');
   }
 
+  * {
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
   html {
     font-size: 10px;
     -webkit-touch-callout : none;
@@ -66,6 +71,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    min-width: 320px;
     line-height: 1.4;
     color: ${Colors.BLACK};
     font-family: 'NotoSansKR', 'Apple SD Gothic Neo', 'Roboto', 'sans-serif';
