@@ -54,6 +54,61 @@ const PHOTO_LIST_DATA = [
 
 const Styled = {
   TagSwiperWrap: styled.div`
+    position: relative;
+
+    &:before,
+    &:after {
+      z-index: 100;
+      content: "";
+      display: none;
+      position: absolute;
+      top: 0;
+      width: 2rem;
+      height: 100%;
+    }
+
+    &:before {
+      left: 0;
+      background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.5) 60%
+      );
+    }
+
+    &:after {
+      right: 0;
+      background-image: linear-gradient(
+        to left,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.5) 60%
+      );
+    }
+
+    ${({ sideShadow }) => {
+      switch (sideShadow) {
+        case "left":
+          return css`
+            &:before {
+              display: block;
+            }
+          `;
+        case "right":
+          return css`
+            &:after {
+              display: block;
+            }
+          `;
+        default:
+          return css`
+            &:before,
+            &:after {
+              display: block;
+            }
+          `;
+      }
+    }}
+
     .tag-swiper {
       margin-bottom: 2rem;
 
@@ -170,6 +225,7 @@ function SwiperComponent() {
   const prevButtonRef = useRef(null);
   const nextButtonRef = useRef(null);
   const tagSwiperRef = useRef(null);
+  const [sideShadowClassName, setSideShadowClassName] = useState("");
 
   const handleClickTag = useCallback(
     id => {
@@ -238,17 +294,20 @@ function SwiperComponent() {
 
     if (swiperWidthHalf > selectedTargetLeft) {
       positionLeft = 0;
+      setSideShadowClassName("right");
     } else if (swiperWidthHalf > slideTotalWidth - selectedTargetLeft) {
       positionLeft = slideTotalWidth - swiper.width;
+      setSideShadowClassName("left");
     } else {
       positionLeft = selectedTargetLeft - swiperWidthHalf;
+      setSideShadowClassName("both");
     }
     swiper.translateTo(-positionLeft, 500);
   }, [currentIndex]);
 
   return (
     <>
-      <Styled.TagSwiperWrap>
+      <Styled.TagSwiperWrap sideShadow={sideShadowClassName}>
         <Swiper
           onSwiper={swiper => (tagSwiperRef.current = swiper)}
           slidesPerView="auto"
