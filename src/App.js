@@ -165,7 +165,7 @@ function App() {
         });
       };
     },
-    [menuIndex]
+    [menuIndex, menuHeight]
   );
 
   useEffect(() => {
@@ -176,16 +176,16 @@ function App() {
 
   useEffect(() => {
     const handleScroll = throttle(() => {
-      const SCROLL_INTERVAL = 100;
+      const TRIGGER_MARGIN = 100;
       const scrollY = window.scrollY;
 
       menuOffset - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
 
-      if (sectionRefs.current[1].offsetTop - SCROLL_INTERVAL - 100 > scrollY) {
+      if (sectionRefs.current[1].offsetTop - TRIGGER_MARGIN - 100 > scrollY) {
         setMenuIndex(0);
       } else if (
-        sectionRefs.current[1].offsetTop - SCROLL_INTERVAL - 100 <= scrollY &&
-        sectionRefs.current[2].offsetTop - SCROLL_INTERVAL - 100 > scrollY
+        sectionRefs.current[1].offsetTop - TRIGGER_MARGIN - 100 <= scrollY &&
+        sectionRefs.current[2].offsetTop - TRIGGER_MARGIN - 100 > scrollY
       ) {
         setMenuIndex(1);
       } else {
@@ -198,7 +198,7 @@ function App() {
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, [menuHeight]);
+  }, [menuHeight, menuOffset]);
 
   return (
     <div className="App">
@@ -241,6 +241,7 @@ function App() {
             </Styled.Title>
             <MotionComponent></MotionComponent>
           </Styled.Section>
+
           <Styled.Section
             ref={el => (sectionRefs.current[1] = el)}
             bgColor={Colors.GRAY}
@@ -250,6 +251,7 @@ function App() {
             </Styled.Title>
             <RwdComponent></RwdComponent>
           </Styled.Section>
+
           <Styled.Section ref={el => (sectionRefs.current[2] = el)}>
             <Styled.Title>
               <strong>Swiper</strong>

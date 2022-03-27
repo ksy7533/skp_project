@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import RWD from "../styles/rwd";
+import { throttle } from "lodash";
 
 import img01 from "../images/img_01.jpg";
 import img02 from "../images/img_02.jpg";
@@ -9,12 +10,42 @@ import img04 from "../images/img_04.jpg";
 import img05 from "../images/img_05.jpg";
 import img06 from "../images/img_06.jpg";
 
+const IMG_LIST = [
+  {
+    src: img01,
+    name: "샌드위치"
+  },
+  {
+    src: img02,
+    name: "파스타"
+  },
+  {
+    src: img03,
+    name: "피자"
+  },
+  {
+    src: img04,
+    name: "꼬치"
+  },
+  {
+    src: img05,
+    name: "스테이크"
+  },
+  {
+    src: img06,
+    name: "캘리포니아롤"
+  }
+];
+
 const Styled = {
   Wrap: styled.div`
     padding-bottom: 3rem;
 
     .wrap-img {
       padding: 0 1rem;
+      transform: translateY(50px);
+      opacity: 0;
+      transition: 0.6s all;
 
       &:not(:first-of-type) {
         padding-top: 1rem;
@@ -22,6 +53,16 @@ const Styled = {
 
       img {
         object-fit: cover;
+      }
+
+      @media screen and (min-width: ${RWD.TABLET}px) {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      &.active {
+        transform: translateY(0);
+        opacity: 1;
       }
     }
 
@@ -74,28 +115,48 @@ const Styled = {
 };
 
 function RwdComponent() {
-  return (
-    <Styled.Wrap>
-      <div className="wrap-img">
-        <img src={img01} alt="샌드위치 이미지" />
-      </div>
-      <div className="wrap-img">
-        <img src={img02} alt="파스타 이미지" />
-      </div>
-      <div className="wrap-img">
-        <img src={img03} alt="피자 이미지" />
-      </div>
-      <div className="wrap-img">
-        <img src={img04} alt="꼬치 이미지" />
-      </div>
-      <div className="wrap-img">
-        <img src={img05} alt="스테이크 이미지" />
-      </div>
-      <div className="wrap-img">
-        <img src={img06} alt="캘리포니아롤 이미지" />
-      </div>
-    </Styled.Wrap>
-  );
+  const imgRefs = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      const scrollY = window.scrollY;
+
+      if (document.body.clientWidth > RWD.TABLET) {
+        imgRefs.current.forEach(item => {
+          item.classList.remove("active");
+        });
+      }
+
+      imgRefs.current.forEach((item, index) => {
+        const TRIGGER_MARGIN = index === 0 ? 500 : 600;
+        if (scrollY > item.offsetTop - TRIGGER_MARGIN) {
+          item.classList.add("active");
+        }
+      });
+    }, 100);
+
+    document.addEventListener("scroll", handleScroll, false);
+
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [imgRefs]);
+
+  const renderImgList = () => {
+    return IMG_LIST.map((item, index) => {
+      return (
+        <div
+          className="wrap-img"
+          key={index}
+          ref={el => (imgRefs.current[index] = el)}
+        >
+          <img src={item.src} alt={item.name} />
+        </div>
+      );
+    });
+  };
+
+  return <Styled.Wrap>{renderImgList()}</Styled.Wrap>;
 }
 
 export default RwdComponent;
