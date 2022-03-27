@@ -35,7 +35,7 @@ const Styled = {
   `,
 
   Menu: styled.div`
-    z-index: 10;
+    z-index: 400;
     position: sticky;
     top: 0;
     padding: 2rem;

@@ -77,13 +77,13 @@ function RwdComponent() {
   return (
     <Styled.Wrap>
       <div className="wrap-img">
-        <img src={img01} alt="샌드위치 이미지 1" />
+        <img src={img01} alt="샌드위치 이미지" />
       </div>
       <div className="wrap-img">
-        <img src={img02} alt="샌드위치 이미지 2" />
+        <img src={img02} alt="파스타 이미지" />
       </div>
       <div className="wrap-img">
-        <img src={img03} alt="귤 이미지" />
+        <img src={img03} alt="피자 이미지" />
       </div>
       <div className="wrap-img">
         <img src={img04} alt="꼬치 이미지" />

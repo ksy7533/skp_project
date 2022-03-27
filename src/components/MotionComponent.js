@@ -100,7 +100,7 @@ const Styled = {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 10;
+      z-index: 200;
       width: 100%;
       height: 100%;
 
@@ -122,7 +122,7 @@ const Styled = {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 1;
+      z-index: 100;
       width: 100%;
       height: 100%;
 
@@ -140,7 +140,7 @@ const Styled = {
     }
 
     .bar {
-      z-index: 100;
+      z-index: 300;
       position: absolute;
       top: 50%;
       left: 50%;

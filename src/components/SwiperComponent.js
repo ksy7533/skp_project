@@ -17,17 +17,17 @@ const photoList = [
   {
     id: 1,
     src: img01,
-    name: "샌드위치1"
+    name: "샌드위치"
   },
   {
     id: 2,
     src: img02,
-    name: "샌드위치2"
+    name: "파스타"
   },
   {
     id: 3,
     src: img03,
-    name: "귤"
+    name: "피자"
   },
   {
     id: 4,
