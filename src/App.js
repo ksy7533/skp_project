@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { throttle } from "lodash";
 import smoothscroll from "smoothscroll-polyfill";
 
@@ -9,6 +9,30 @@ import RWD from "./styles/rwd";
 import MotionComponent from "./components/MotionComponent";
 import RwdComponent from "./components/RwdComponent";
 import SwiperComponent from "./components/SwiperComponent";
+
+const SECTION_LIST = [
+  {
+    name: "Motion",
+    component: MotionComponent
+  },
+  {
+    name: "Responsive Web Design",
+    component: RwdComponent,
+    bgColor: Colors.GRAY
+  },
+  {
+    name: "Swiper",
+    component: SwiperComponent
+  },
+  {
+    name: "Motion",
+    component: MotionComponent
+  },
+  {
+    name: "Motion",
+    component: MotionComponent
+  }
+];
 
 const Styled = {
   Wrap: styled.div`
@@ -64,12 +88,18 @@ const Styled = {
         width: 50%;
         font-size: 1.1rem;
 
-        &:nth-child(-n + 2) {
+
+        /* &:nth-child(-n + 2) {
           border-bottom: 1px solid ${Colors.GRAY};
-        }
+        } */
 
         &:nth-child(odd) {
           border-right: 1px solid ${Colors.GRAY};
+          border-bottom: 1px solid ${Colors.GRAY};
+        }
+
+        &:nth-child(even) {
+          border-bottom: 1px solid ${Colors.GRAY};
         }
 
         &.on {
@@ -98,6 +128,31 @@ const Styled = {
         }
       }
     }
+
+    
+
+    ${({ isEven }) => {
+      console.log(isEven);
+      return isEven
+        ? css`
+            nav {
+              a {
+                &:nth-last-child(-n + 2) {
+                  border-bottom: 0;
+                }
+              }
+            }
+          `
+        : css`
+            nav {
+              a {
+                &:nth-last-child(-n + 1) {
+                  border-bottom: 0;
+                }
+              }
+            }
+          `;
+    }}
   `,
 
   Container: styled.main``,
@@ -176,20 +231,32 @@ function App() {
 
   useEffect(() => {
     const handleScroll = throttle(() => {
-      const TRIGGER_MARGIN = 100;
+      const TRIGGER_MARGIN = 200;
       const scrollY = window.scrollY;
 
       menuOffset - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
 
-      if (sectionRefs.current[1].offsetTop - TRIGGER_MARGIN - 100 > scrollY) {
+      if (sectionRefs.current[1].offsetTop - TRIGGER_MARGIN > scrollY) {
         setMenuIndex(0);
-      } else if (
-        sectionRefs.current[1].offsetTop - TRIGGER_MARGIN - 100 <= scrollY &&
-        sectionRefs.current[2].offsetTop - TRIGGER_MARGIN - 100 > scrollY
+        return;
+      }
+
+      for (let index = 1; index < sectionRefs.current.length - 1; index++) {
+        if (
+          sectionRefs.current[index].offsetTop - TRIGGER_MARGIN <= scrollY &&
+          sectionRefs.current[index + 1].offsetTop - TRIGGER_MARGIN > scrollY
+        ) {
+          setMenuIndex(index);
+          break;
+        }
+      }
+
+      if (
+        sectionRefs.current[sectionRefs.current.length - 1].offsetTop -
+          TRIGGER_MARGIN <
+        scrollY
       ) {
-        setMenuIndex(1);
-      } else {
-        setMenuIndex(2);
+        setMenuIndex(sectionRefs.current.length - 1);
       }
     }, 100);
 
@@ -200,6 +267,38 @@ function App() {
     };
   }, [menuHeight, menuOffset]);
 
+  const renderMenuList = useMemo(() => {
+    return SECTION_LIST.map((item, index) => {
+      return (
+        <a
+          href="#"
+          onClick={handleMenuClick(index)}
+          className={menuIndex === index ? "on" : ""}
+          key={index}
+        >
+          {item.name}
+        </a>
+      );
+    });
+  }, [handleMenuClick, menuIndex]);
+
+  const renderSectionList = useMemo(() => {
+    return SECTION_LIST.map((item, index) => {
+      return (
+        <Styled.Section
+          ref={el => (sectionRefs.current[index] = el)}
+          key={index}
+          bgColor={item.bgColor}
+        >
+          <Styled.Title>
+            <strong>{item.name}</strong>
+          </Styled.Title>
+          <item.component />
+        </Styled.Section>
+      );
+    });
+  }, []);
+
   return (
     <div className="App">
       <Styled.Wrap>
@@ -208,57 +307,15 @@ function App() {
           <p>각 섹션을 참고하여 그대로 레이아웃을 구현해 주세요.</p>
         </Styled.Header>
 
-        <Styled.Menu ref={menuRef} isFixed={isFixed}>
-          <nav>
-            <a
-              href="#"
-              onClick={handleMenuClick(0)}
-              className={menuIndex === 0 ? "on" : ""}
-            >
-              Motion
-            </a>
-            <a
-              href="#"
-              onClick={handleMenuClick(1)}
-              className={menuIndex === 1 ? "on" : ""}
-            >
-              Responsive Web Design
-            </a>
-            <a
-              href="#"
-              onClick={handleMenuClick(2)}
-              className={menuIndex === 2 ? "on" : ""}
-            >
-              Swiper
-            </a>
-          </nav>
+        <Styled.Menu
+          ref={menuRef}
+          isFixed={isFixed}
+          isEven={SECTION_LIST.length % 2 === 0}
+        >
+          <nav>{renderMenuList}</nav>
         </Styled.Menu>
 
-        <Styled.Container>
-          <Styled.Section ref={el => (sectionRefs.current[0] = el)}>
-            <Styled.Title>
-              <strong>Motion</strong>
-            </Styled.Title>
-            <MotionComponent></MotionComponent>
-          </Styled.Section>
-
-          <Styled.Section
-            ref={el => (sectionRefs.current[1] = el)}
-            bgColor={Colors.GRAY}
-          >
-            <Styled.Title>
-              <strong>Responsive Web Design</strong>
-            </Styled.Title>
-            <RwdComponent></RwdComponent>
-          </Styled.Section>
-
-          <Styled.Section ref={el => (sectionRefs.current[2] = el)}>
-            <Styled.Title>
-              <strong>Swiper</strong>
-            </Styled.Title>
-            <SwiperComponent></SwiperComponent>
-          </Styled.Section>
-        </Styled.Container>
+        <Styled.Container>{renderSectionList}</Styled.Container>
       </Styled.Wrap>
 
       <Styled.Footer>
