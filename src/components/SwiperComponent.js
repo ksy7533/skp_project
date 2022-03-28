@@ -8,7 +8,12 @@ import React, {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import styled, { css } from "styled-components";
-import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
+import {
+  HiChevronDoubleLeft,
+  HiChevronDoubleRight,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight
+} from "react-icons/hi";
 import RWD from "../styles/rwd";
 import Colors from "../styles/colors";
 import "swiper/css";
@@ -56,53 +61,50 @@ const Styled = {
   TagSwiperWrap: styled.div`
     position: relative;
 
-    &:before,
-    &:after {
-      z-index: 100;
-      content: "";
+    .prev-button,
+    .next-button {
       display: none;
+      z-index: 10;
       position: absolute;
-      top: 0;
-      width: 2rem;
-      height: 100%;
+      top: 50%;
+      padding: 0;
+      transform: translateY(-50%);
+
+      .icon {
+        vertical-align: middle;
+        width: 30px;
+        height: 30px;
+        color: ${Colors.GRAY};
+        font-size: 4rem;
+      }
     }
 
-    &:before {
+    .prev-button {
       left: 0;
-      background-image: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0.9),
-        rgba(255, 255, 255, 0.5) 60%
-      );
     }
 
-    &:after {
+    .next-button {
       right: 0;
-      background-image: linear-gradient(
-        to left,
-        rgba(255, 255, 255, 0.9),
-        rgba(255, 255, 255, 0.5) 60%
-      );
     }
 
     ${({ sideShadow }) => {
       switch (sideShadow) {
         case "left":
           return css`
-            &:before {
+            .prev-button {
               display: block;
             }
           `;
         case "right":
           return css`
-            &:after {
+            .next-button {
               display: block;
             }
           `;
         default:
           return css`
-            &:before,
-            &:after {
+            .prev-button,
+            .next-button {
               display: block;
             }
           `;
@@ -201,14 +203,6 @@ const Styled = {
     }
   `,
 
-  PrevArrowIcon: styled(HiChevronDoubleLeft)`
-    color: ${Colors.WHITE};
-  `,
-
-  NextArrowIcon: styled(HiChevronDoubleRight)`
-    color: ${Colors.WHITE};
-  `,
-
   ScreenOut: styled.span`
     overflow: hidden;
     position: absolute;
@@ -262,7 +256,7 @@ function SwiperComponent() {
         );
       });
     };
-  }, [currentIndex]);
+  }, [currentIndex, handleClickTag]);
 
   const renderPhotoSwiperSlide = useMemo(() => {
     return () => {
@@ -305,6 +299,21 @@ function SwiperComponent() {
     swiper.translateTo(-positionLeft, 500);
   }, [currentIndex]);
 
+  const handleClickTagNaviButton = useCallback(
+    direction => {
+      return () => {
+        if (direction === "prev") {
+          tagSwiperRef.current.slidePrev();
+          photoSwiperRef.current.slidePrev();
+        } else {
+          tagSwiperRef.current.slideNext();
+          photoSwiperRef.current.slideNext();
+        }
+      };
+    },
+    [tagSwiperRef, photoSwiperRef]
+  );
+
   return (
     <>
       <Styled.TagSwiperWrap sideShadow={sideShadowClassName}>
@@ -315,6 +324,20 @@ function SwiperComponent() {
         >
           {renderTagSwiperSlide()}
         </Swiper>
+        <button
+          className="prev-button"
+          onClick={handleClickTagNaviButton("prev")}
+        >
+          <HiOutlineChevronLeft className="icon" />
+          <Styled.ScreenOut>이전</Styled.ScreenOut>
+        </button>
+        <button
+          className="next-button"
+          onClick={handleClickTagNaviButton("next")}
+        >
+          <HiOutlineChevronRight className="icon" />
+          <Styled.ScreenOut>다음</Styled.ScreenOut>
+        </button>
       </Styled.TagSwiperWrap>
 
       <Styled.PhotoSwiperWrap>
