@@ -25,12 +25,13 @@ const SECTION_LIST = [
     component: SwiperComponent
   },
   {
-    name: "Motion",
+    name: "Motion 2",
     component: MotionComponent
   },
   {
-    name: "Motion",
-    component: MotionComponent
+    name: "Responsive Web Design",
+    component: RwdComponent,
+    bgColor: Colors.GRAY
   }
 ];
 
@@ -88,11 +89,6 @@ const Styled = {
         width: 50%;
         font-size: 1.1rem;
 
-
-        /* &:nth-child(-n + 2) {
-          border-bottom: 1px solid ${Colors.GRAY};
-        } */
-
         &:nth-child(odd) {
           border-right: 1px solid ${Colors.GRAY};
           border-bottom: 1px solid ${Colors.GRAY};
@@ -110,48 +106,48 @@ const Styled = {
 
         @media screen and (min-width: ${RWD.TABLET}px) {
           width: 33.33%;
-          border-right: 0;
-          border-bottom: 0;
-          border-top: 0;
-
-          &:nth-child(-n + 2) {
-            border-bottom: 0;
-          }
 
           &:nth-child(odd) {
-            border-right: 0;
+            border-right: 1px solid ${Colors.GRAY};
+            border-bottom: 1px solid ${Colors.GRAY};
           }
 
-          &:not(:first-of-type) {
-            border-left: 1px solid ${Colors.GRAY};
+          &:nth-child(even) {
+            border-right: 1px solid ${Colors.GRAY};
+            border-bottom: 1px solid ${Colors.GRAY};
+          }
+          &:nth-child(3n) {
+            border-right: 0;
           }
         }
       }
     }
 
-    
+    ${({ listLength, isMobile }) => {
+      const columnNumber = isMobile ? 2 : 3; // 너비에 따라 2 or 3
+      const restNumber = listLength % columnNumber;
 
-    ${({ isEven }) => {
-      console.log(isEven);
-      return isEven
-        ? css`
-            nav {
-              a {
-                &:nth-last-child(-n + 2) {
-                  border-bottom: 0;
-                }
+      if (listLength % columnNumber === 0) {
+        return css`
+          nav {
+            a {
+              &:nth-last-child(-n + ${columnNumber}) {
+                border-bottom: 0;
               }
             }
-          `
-        : css`
-            nav {
-              a {
-                &:nth-last-child(-n + 1) {
-                  border-bottom: 0;
-                }
+          }
+        `;
+      } else {
+        return css`
+          nav {
+            a {
+              &:nth-last-child(-n + ${restNumber}) {
+                border-bottom: 0;
               }
             }
-          `;
+          }
+        `;
+      }
     }}
   `,
 
@@ -206,6 +202,7 @@ function App() {
   const [menuHeight, setMenuHeight] = useState(0);
   const [isFixed, setIsFixed] = useState(false);
   const [menuOffset, setMenuOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleMenuClick = useCallback(
     index => {
@@ -227,6 +224,7 @@ function App() {
     smoothscroll.polyfill();
     setMenuHeight(menuRef.current.offsetHeight);
     setMenuOffset(menuRef.current.offsetTop);
+    setIsMobile(window.innerWidth <= RWD.TABLET);
   }, []);
 
   useEffect(() => {
@@ -266,6 +264,19 @@ function App() {
       document.removeEventListener("scroll", handleScroll);
     };
   }, [menuHeight, menuOffset]);
+
+  useEffect(() => {
+    const handleResize = throttle(() => {
+      const { innerWidth } = window;
+      innerWidth <= RWD.TABLET ? setIsMobile(true) : setIsMobile(false);
+    }, [100]);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobile]);
 
   const renderMenuList = useMemo(() => {
     return SECTION_LIST.map((item, index) => {
@@ -310,7 +321,8 @@ function App() {
         <Styled.Menu
           ref={menuRef}
           isFixed={isFixed}
-          isEven={SECTION_LIST.length % 2 === 0}
+          listLength={SECTION_LIST.length}
+          isMobile={isMobile}
         >
           <nav>{renderMenuList}</nav>
         </Styled.Menu>
