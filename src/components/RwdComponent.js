@@ -10,6 +10,10 @@ import img04 from "../images/img_04.jpg";
 import img05 from "../images/img_05.jpg";
 import img06 from "../images/img_06.jpg";
 
+/**
+ * IMG_LIST에 값에 따라 이미지가 유동적으로 변경한다
+ */
+
 const IMG_LIST = [
   {
     src: img01,
@@ -117,6 +121,9 @@ const Styled = {
 function RwdComponent() {
   const imgRefs = useRef([]);
 
+  /**
+   * 각 이미지 리스트 위치에 스크롤이 이동할때 이미지가 아래에서 위로 스르륵 올라오는 애니메이션 구현
+   */
   useEffect(() => {
     const handleScroll = throttle(() => {
       const scrollY = window.scrollY;
@@ -142,6 +149,9 @@ function RwdComponent() {
     };
   }, [imgRefs]);
 
+  /**
+   * 이미지 리트스 렌더
+   */
   const renderImgList = () => {
     return IMG_LIST.map((item, index) => {
       return (

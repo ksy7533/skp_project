@@ -24,6 +24,9 @@ import img04 from "../images/img_04.jpg";
 import img05 from "../images/img_05.jpg";
 import img06 from "../images/img_06.jpg";
 
+/**
+ * PHOTO_LIST_DATA 값에 따라 스와이퍼 슬라이드 메뉴가 유동적으로 구성
+ */
 const PHOTO_LIST_DATA = [
   {
     id: 1,
@@ -214,13 +217,16 @@ const Styled = {
 };
 
 function SwiperComponent() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0); // 태그, 이미지 스와이퍼 공통으로 사용되는 index
   const photoSwiperRef = useRef(null);
   const prevButtonRef = useRef(null);
   const nextButtonRef = useRef(null);
   const tagSwiperRef = useRef(null);
   const [sideShadowClassName, setSideShadowClassName] = useState("");
 
+  /**
+   * 태그 클릭시 해당 인덱스로 슬라이드 이동
+   */
   const handleClickTag = useCallback(
     id => {
       const index = PHOTO_LIST_DATA.findIndex(item => {
@@ -234,6 +240,9 @@ function SwiperComponent() {
     [photoSwiperRef]
   );
 
+  /**
+   * 포토 스와이퍼 네비게이션 커스텀을 위해 해당 내용 초기화
+   */
   const handlePhotoSwiperInit = useCallback(swiper => {
     swiper.params.navigation.prevEl = prevButtonRef.current;
     swiper.params.navigation.nextEl = nextButtonRef.current;
@@ -241,6 +250,9 @@ function SwiperComponent() {
     swiper.navigation.update();
   }, []);
 
+  /**
+   * 태그 스와이퍼 렌더
+   */
   const renderTagSwiperSlide = useMemo(() => {
     return () => {
       return PHOTO_LIST_DATA.map((item, index) => {
@@ -258,6 +270,9 @@ function SwiperComponent() {
     };
   }, [currentIndex, handleClickTag]);
 
+  /**
+   * 포토 스와이퍼 렌더
+   */
   const renderPhotoSwiperSlide = useMemo(() => {
     return () => {
       return PHOTO_LIST_DATA.map(item => {
@@ -270,10 +285,16 @@ function SwiperComponent() {
     };
   }, []);
 
+  /**
+   * 포토 스와이퍼의 인덱스가 변경될때 currentIndex를 동기화 시켜 태그 스와이퍼에서도 현재 인덱스가 무엇인지 파악
+   */
   const handleRealIndexChange = useCallback(({ realIndex }) => {
     setCurrentIndex(realIndex);
   }, []);
 
+  /**
+   * 태그 스와이퍼에서 양쪽 사이드에 태그가 위치할 경우를 제외하고 태그 클릭시 가운데로 이동하게 한다
+   */
   useEffect(() => {
     const swiper = tagSwiperRef.current;
     const slides = swiper.slides;
@@ -299,6 +320,9 @@ function SwiperComponent() {
     swiper.translateTo(-positionLeft, 500);
   }, [currentIndex]);
 
+  /**
+   * 태그 스와이퍼 양쪽 화살표 버튼 클릭시 다음 태그로 이동
+   */
   const handleClickTagNaviButton = useCallback(
     direction => {
       return () => {

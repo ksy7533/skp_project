@@ -10,6 +10,11 @@ import MotionComponent from "./components/MotionComponent";
 import RwdComponent from "./components/RwdComponent";
 import SwiperComponent from "./components/SwiperComponent";
 
+/**
+ * SECTION_LIST에 값에 따라 섹션콤포넌트 유동적으로 변경
+ * 섹션 리스트값 변경해도 스크롤시 메뉴변경이나, 메뉴 클릭시 해당 섹션으로 이동 가능하도록 적용
+ */
+
 const SECTION_LIST = [
   {
     name: "Motion",
@@ -23,15 +28,6 @@ const SECTION_LIST = [
   {
     name: "Swiper",
     component: SwiperComponent
-  },
-  {
-    name: "Motion 2",
-    component: MotionComponent
-  },
-  {
-    name: "Responsive Web Design",
-    component: RwdComponent,
-    bgColor: Colors.GRAY
   }
 ];
 
@@ -200,10 +196,13 @@ function App() {
   const menuRef = useRef();
   const [menuIndex, setMenuIndex] = useState(0);
   const [menuHeight, setMenuHeight] = useState(0);
-  const [isFixed, setIsFixed] = useState(false);
-  const [menuOffset, setMenuOffset] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isFixed, setIsFixed] = useState(false); // 메뉴 상단 고정 여부
+  const [menuOffsetTop, setMenuOffsetTop] = useState(0);
+  const [isMobile, setIsMobile] = useState(false); // 모바일 너비 인지 여부
 
+  /**
+   * 메뉴 클릭할때 해당 위치로 부드럽게 이동
+   */
   const handleMenuClick = useCallback(
     index => {
       return e => {
@@ -220,19 +219,26 @@ function App() {
     [menuIndex, menuHeight]
   );
 
+  /**
+   * 앱이 실행될때 기본적으로 필요한 것들 셋팅
+   */
   useEffect(() => {
     smoothscroll.polyfill();
     setMenuHeight(menuRef.current.offsetHeight);
-    setMenuOffset(menuRef.current.offsetTop);
+    setMenuOffsetTop(menuRef.current.offsetTop);
     setIsMobile(window.innerWidth <= RWD.TABLET);
   }, []);
 
+  /**
+   * 스크롤이 해당 섹션 상단 위치로 이동할때 해당 메뉴로 변경되기 위함
+   * 메뉴 리스트 갯수가 변경되도 대응 되도록 적용
+   */
   useEffect(() => {
     const handleScroll = throttle(() => {
-      const TRIGGER_MARGIN = 200;
+      const TRIGGER_MARGIN = 200; // 타겟위치값 보다 얼마나 이전에 이벤트가 발생할 것인가
       const scrollY = window.scrollY;
 
-      menuOffset - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
+      menuOffsetTop - 1 <= scrollY ? setIsFixed(true) : setIsFixed(false);
 
       if (sectionRefs.current[1].offsetTop - TRIGGER_MARGIN > scrollY) {
         setMenuIndex(0);
@@ -263,8 +269,11 @@ function App() {
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, [menuHeight, menuOffset]);
+  }, [menuHeight, menuOffsetTop]);
 
+  /**
+   * 윈도우창 사이즈 변경될때 마다 isMobile(모바일 너비) 인지 확인
+   */
   useEffect(() => {
     const handleResize = throttle(() => {
       const { innerWidth } = window;
@@ -278,6 +287,9 @@ function App() {
     };
   }, [isMobile]);
 
+  /**
+   * 메뉴 리스트 렌더
+   */
   const renderMenuList = useMemo(() => {
     return SECTION_LIST.map((item, index) => {
       return (
@@ -293,6 +305,9 @@ function App() {
     });
   }, [handleMenuClick, menuIndex]);
 
+  /**
+   * 섹션 리스트 렌더
+   */
   const renderSectionList = useMemo(() => {
     return SECTION_LIST.map((item, index) => {
       return (

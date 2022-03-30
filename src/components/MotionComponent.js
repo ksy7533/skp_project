@@ -2,18 +2,38 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Colors from "../styles/colors";
 
+/**
+ * 모션 콤포넌트
+ * - CSS 애니메이션 속성을 이용하여 구현한다
+ * - 좌측 원, 가운데 바, 우측 흰색 네모로 구성되어 있다
+ * - 좌측 원이 가운데로 이동할때 마치 쏘옥 들어가서 쏘옥 나가는 모습을 구현 하기 위해
+ *   가운데 바를 축으로 우측에 있는 흰색 네모가 회전하도록 만들어 들어가는 순간 원의 절반이 보이지 않고
+ *   나갈때도 원의 반쪽이 가려져 있는것 처럼 보이도록 한다
+ * - 애니메이션은 모든 색이 전부 바뀔때까지를 한 싸이클로 본다 (변경되는 원의 색 x KEYFRAMES_STEP)
+ */
+
 const BASE_CIRCLE_COLOR = "#fe0955"; // 기본 원의 색
 const CIRCLE_COLORS = ["#ffd35c", "#29afff", "#50ebc3", "#fb9f5f"]; // 변경되는 원의 색
+/**
+ * KEYFRAMES_STEP
+ * - 오른쪽 원의 색이 한번 변하는 것이 1회 왕복이라고 했을때 아래와 같이 4단계로 나뉨
+ * 1. 왼쪽   -> 가운데
+ * 2. 가운데 -> 오른쪽
+ * 3. 오른쪽 -> 가운데
+ * 4. 가운데 -> 왼쪽
+ */
 const KEYFRAMES_STEP = 4;
 const BOX_WIDTH = 258;
 const BOX_HEIGHT = 210;
 const CIRCLE_WIDTH = 84;
 const CIRCLE_HEIGHT = 84;
 const DURATION = 450;
+const BAR_WIDTH = 2;
+const BAR_HEIGHT = 132;
 
 const fadeKeyframes = () => {
   const CIRCLE_COLORS_LENGTH = CIRCLE_COLORS.length;
-  const TRANSLATE_X_DISTANCE = BOX_WIDTH - CIRCLE_WIDTH;
+  const TRANSLATE_X_DISTANCE = BOX_WIDTH - CIRCLE_WIDTH; // 원의 이동 거리
   let result = "";
 
   for (
@@ -145,8 +165,8 @@ const Styled = {
       top: 50%;
       left: 50%;
       margin: 0 auto;
-      width: 2px;
-      height: 132px;
+      width: ${BAR_WIDTH}px;
+      height: ${BAR_HEIGHT}px;
       background-color: #e7e7e7;
       transform: translate(-50%, -50%);
     }

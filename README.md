@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# SKP Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- 리액트를 이용한 프로젝트
 
-## Available Scripts
+## 실행방법
 
-In the project directory, you can run:
+1. 해당 디렉토리에서 npm install 명령어 실행
+2. npm run start로 개발서버 실행
 
-### `npm start`
+##데모
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- https://ksy7533.github.io/skp_project/
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##사용된 모듈
 
-### `npm test`
+- react-icon
+  - 아이콘 사용
+- styled-components
+  - css in js 모듈
+- swiper.js
+  - 스와이퍼 기능
+- lodash
+  - throttle 함수 사용
+- styled-reset
+  - css 초기화를 위한 모듈
+- gh-pages
+  - git hub pages 배포를 위한 모듈
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##콤포넌트 구조
 
-### `npm run build`
+- App 콤포넌트
+  - Header 콤포넌트
+  - Menu 콤포넌트
+  - Container 콤포넌트
+    - 모션 콤포넌트
+    - 반응형 콤포넌트
+    - 스와이퍼 콤포넌트
+  - Footer 콤포넌트
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+##추가기능 및 설명
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- GNB 메뉴
+  - 메뉴 클릭시 부드럽게 이동하는 처리는 window.scroll 함수의 behavior: 'smooth'속성을 적용하여 구현하였습니다.
+  - SECTION_LIST라는 배열 데이터를 만들어 섹션 콤포넌트가 유동적으로 변경 가능하게 하였습니다.
+  - 섹션 콤포넌트 갯수에 따라 메뉴가 변경됩니다.
+  - 섹션 콤포넌트 갯수에 따라 스크롤이 섹션 콤포넌트의 위치할때 메뉴가 변경됩니다.
+  - 섹션 콤포넌트 갯수에 따라 메뉴를 눌렀을때 해당 섹션 콤포넌트 위치로 이동합니다.
+- 모션 콤포넌트
+  - 모션 콤포넌트는 CSS의 애니메이션과 transform을 이용하여 구현하였습니다.
+  - 요구사항이 몇가지 변경 되는 것을 고려하여 유동적으로 변할 수 있도록 대응하였습니다.
+  - 원의 색이 변하는 순서나 갯수가 변경 가능 하도록 하였습니다.
+- 반응형 콤포넌트
+  - PC 기준 반응형의 경우 grid-layout을 적용하여 최대한 마크업이 복잡하지 않도록 구현하였습니다.
+  - 모바일 기준으로 스크롤을 내려 반응형 콤포넌트 리스트 이미지의 위치에 도달 할때마다 위로 스르륵 올라오는 애니메이션을 추가하였습니다.
+- 스와이퍼 콤포넌트
+  - PHOTO_LIST_DATA라는 배열 데이터를 만들어 스와이퍼 슬라이드가 유동적으로 변경 가능하게 하였습니다.
+  - 스와이퍼 콤포넌트는 태그 스와이퍼, 이미지 스와이퍼 총 2개로 구성되어있습니다.
+  - 태그 스와이퍼와 이미지 스와이퍼는 서로 연동되어 있어 슬라이드 순서가 바뀌면 같이 바뀝니다. (두개의 스와이퍼는 인덱스를 공유하는데 realIndexChange api를 이용하여 이미지 스와이퍼의 현재 인덱스가 몇번째인지 확인합니다.)
+  - 태그 스와이퍼의 경우 태그를 클릭 할때 양 사이드끝에 위치한 경우를 제외하고 사용자가 누르기 쉽게 태그가 가운데로 위치합니다(스와이퍼의 transitonTo api를 사용하여 위치변경 하였습니다.)
+  - 태그 스와이퍼의 경우 좌측 또는 우측에 태그가 더있는것을 표시하기 위해 양 사이드에 화살표 버튼을 추가하였습니다. 예를들어 좌측에는 데이터가 없고, 우측에 데이터가 더 있다면 우측에만 화살표 버튼이 생기고 클릭하면 다음 태그로 이동합니다.(슬라이드 이동은 스와이퍼의 slidePrev, slideNext api를 이용하였습니다.)
+  - 이미지 스와이퍼의 경우 좌우버튼을 커스터마이징 하였습니다. (스와이퍼 navigation 속성을 이용하여 각 버튼을 커스터마이징 하였습니다)
